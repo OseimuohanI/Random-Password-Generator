@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Password Generator</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+        #instructions {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <pre id="instructions">
+Usage instructions:
+
+Provide query parameters in the URL to generate a password.
+If no parameters are provided, you will see this instruction page.
+
+Parameters:
+- length: integer (e.g., 16)
+- uppercase: true or false
+- lowercase: true or false
+- numbers: true or false
+- special: true or false
+
+Example Usage:
+?length=16&uppercase=true&lowercase=true&numbers=true&special=true
+    </pre>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+
+        if (Array.from(params.keys()).length > 0) {
+            const lengthParam = params.get('length');
+            const length = lengthParam ? parseInt(lengthParam, 10) : 16; // default to 16
+
+            const uppercase = params.get('uppercase') === 'true';
+            const lowercase = params.get('lowercase') === 'true';
+            const numbers = params.get('numbers') === 'true';
+            const special = params.get('special') === 'true';
+
+            let charset = '';
+            if (uppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (lowercase) charset += 'abcdefghijklmnopqrstuvwxyz';
+            if (numbers) charset += '0123456789';
+            if (special) charset += '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+
+            if (charset === '') {
+                document.body.textContent = 'Error: You must select at least one character set (e.g., lowercase=true).';
+            } else {
+                let password = '';
+
+                const randomValues = new Uint32Array(length);
+                window.crypto.getRandomValues(randomValues);
+
+                for (let i = 0; i < length; i++) {
+                    password += charset[randomValues[i] % charset.length];
+                }
+
+                document.body.textContent = password;
+            }
+        }
+    </script>
+</body>
+</html>
