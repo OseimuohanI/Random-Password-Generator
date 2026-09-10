@@ -2,7 +2,7 @@
 
 A small, single-page password generator. Built for personal use.
 
-**Live:** [https://oseimuohani.github.io/Random-Password-Generator/](https://pass-generator.osemekeme.workers.dev)
+**Live:** [Random-Password-Generator/](https://pass-generator.osemekeme.workers.dev)
 
 ## Usage
 
