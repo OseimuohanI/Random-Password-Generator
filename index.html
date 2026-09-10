@@ -27,9 +27,10 @@ Parameters:
 - lowercase: true or false
 - numbers: true or false
 - special: true or false
+- format: "json" (optional, outputs result as a JSON string)
 
 Example Usage:
-?length=16&uppercase=true&lowercase=true&numbers=true&special=true
+?length=16&uppercase=true&lowercase=true&numbers=true&special=true&format=json
     </pre>
 
     <script>
@@ -43,6 +44,7 @@ Example Usage:
             const lowercase = params.get('lowercase') === 'true';
             const numbers = params.get('numbers') === 'true';
             const special = params.get('special') === 'true';
+            const format = params.get('format');
 
             let charset = '';
             if (uppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -51,7 +53,12 @@ Example Usage:
             if (special) charset += '!@#$%^&*()_+~`|}{[]:;?><,./-=';
 
             if (charset === '') {
-                document.body.textContent = 'Error: You must select at least one character set (e.g., lowercase=true).';
+                const errMsg = 'Error: You must select at least one character set (e.g., lowercase=true).';
+                if (format === 'json') {
+                    document.body.textContent = JSON.stringify({ error: errMsg }, null, 2);
+                } else {
+                    document.body.textContent = errMsg;
+                }
             } else {
                 let password = '';
 
@@ -62,7 +69,14 @@ Example Usage:
                     password += charset[randomValues[i] % charset.length];
                 }
 
-                document.body.textContent = password;
+                if (format === 'json') {
+                    document.body.innerHTML = '';
+                    document.body.style.fontFamily = 'monospace';
+                    document.body.style.whiteSpace = 'pre-wrap';
+                    document.body.textContent = JSON.stringify({ password: password }, null, 2);
+                } else {
+                    document.body.textContent = password;
+                }
             }
         }
     </script>
