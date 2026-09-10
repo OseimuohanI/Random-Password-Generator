@@ -21,7 +21,7 @@ Provide query parameters in the URL to generate a password. If no parameters are
 ### Example
 
 ```
-?length=16&uppercase=true&lowercase=true&numbers=true&special=true
+?length=16&uppercase=true&lowercase=true&numbers=true&special=true&format=json
 ```
 
 ## License
